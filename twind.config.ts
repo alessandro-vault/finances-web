@@ -1,8 +1,12 @@
 import {defineConfig} from "@twind/core";
 import presetTailwind from "@twind/preset-tailwind";
+import presetExt from "@twind/preset-ext";
 
 export default defineConfig({
-    presets: [presetTailwind()],
+    presets: [
+        presetTailwind(),
+        presetExt(),
+    ],
     darkMode: "class",
     theme: {
         content: [
@@ -34,7 +38,7 @@ export default defineConfig({
             },
             colors: {
                 'slate': {
-                    950: '#020617'
+                    950: '#020617',
                 }
             }
         }

@@ -16,13 +16,14 @@ import {
     FormDescription,
     FormMessage,
 } from "@/components/ui/form";
-import {Input} from "@/components/ui/input";
-import {useForm} from "react-hook-form";
+import { Input } from "@/components/ui/input";
+import { useForm } from "react-hook-form";
 import Layout from "@/components/layout";
 import * as z from "zod";
-import {Button} from "@/components/ui/button";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
-const LoginPage = (): ReactElement => {
+export default function LoginPage(): ReactElement {
     const form = useForm()
 
     const formSchema = z.object({
@@ -31,51 +32,54 @@ const LoginPage = (): ReactElement => {
     })
     return (
         <Layout>
-            <Card>
+            <Card className="w-11/12 md:w-[350px]">
                 <CardHeader>
                     <CardTitle>Login</CardTitle>
                     <CardDescription>Enter your credentials below</CardDescription>
                 </CardHeader>
                 <CardContent>
-                    <Form {...form}>
-                        <FormField
-                            control={form.control}
-                            name="username"
-                            render={({field}) => (
-                                <FormItem>
-                                    <FormLabel>Username</FormLabel>
-                                    <FormControl>
-                                        <Input placeholder="shadcn" {...field} />
-                                    </FormControl>
-                                    <FormDescription>This is your public display name.</FormDescription>
-                                    <FormMessage/>
-                                </FormItem>
-                            )}
-                        />
-                        <FormField
-                            control={form.control}
-                            name="password"
-                            render={({field}) => (
-                                <FormItem>
-                                    <FormLabel>Password</FormLabel>
-                                    <FormControl>
-                                        <Input type="password" placeholder="********" {...field} />
-                                    </FormControl>
-                                    <FormMessage/>
-                                </FormItem>
-                            )}
-                        />
-                        <Button type="submit">
-                            Login
-                        </Button>
-                    </Form>
+                    <form>
+                        <Form {...form}>
+                            <FormField
+                                control={form.control}
+                                name="username"
+                                render={({field}) => (
+                                    <FormItem>
+                                        <FormLabel>Username</FormLabel>
+                                        <FormControl>
+                                            <Input placeholder="" {...field} autoComplete="username"/>
+                                        </FormControl>
+                                        <FormDescription>This is your public display name.</FormDescription>
+                                        <FormMessage/>
+                                    </FormItem>
+                                )}
+                            />
+                            <FormField
+                                control={form.control}
+                                name="password"
+                                render={({field}) => (
+                                    <FormItem>
+                                        <FormLabel>Password</FormLabel>
+                                        <FormControl>
+                                            <Input type="password" placeholder="********" autoComplete="current-password" {...field} />
+                                        </FormControl>
+                                        <FormMessage/>
+                                    </FormItem>
+                                )}
+                            />
+                            <Button className="w-full mt-8 " type="submit">
+                                Login
+                            </Button>
+                        </Form>
+                    </form>
                 </CardContent>
-                <CardFooter>
-                    <span>Don't have an account? <a href="/register" className="text-blue-500">Register</a></span>
+                <CardFooter className="text-xs flex justify-center">
+                    <span className="text-gray-500 dark:text-gray-200 mr-2">Don&apos;t have an account?</span>
+                    <Link href="/register" className="text-blue-300">
+                        Register
+                    </Link>
                 </CardFooter>
             </Card>
         </Layout>
     )
 }
-
-export default LoginPage

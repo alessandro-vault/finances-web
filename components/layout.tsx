@@ -1,10 +1,8 @@
 import { ScriptProps } from "next/script";
 import { Moon, Sun } from "lucide-react"
-import {ThemeProvider, useTheme} from "next-themes";
+import { ThemeProvider, useTheme } from "next-themes";
 import Link from "next/link"
 
-import { cn } from "@/lib/utils"
-import { Icons } from "@/components/ui/icons"
 import {
     NavigationMenu,
     NavigationMenuContent,
@@ -21,7 +19,7 @@ import {
     DropdownMenuItem,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import {Button} from "@/components/ui/button";
+import { Button } from "@/components/ui/button";
 
 export default function Layout({children}: ScriptProps) {
     const { theme } = useTheme()
@@ -33,8 +31,16 @@ export default function Layout({children}: ScriptProps) {
             enableSystem
             disableTransitionOnChange
         >
-            <header className="w-screen h-14 border(b-1 white) flex items-center">
+            <header
+                className="w-screen h-14 border(b-1 white) flex items-center justify-end px-8"
+                suppressHydrationWarning
+            >
                 <NavigationMenu>
+                    <Link href="/register" legacyBehavior passHref>
+                        <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                            Register
+                        </NavigationMenuLink>
+                    </Link>
                     <NavigationMenuList>
                         <NavigationMenuItem>
                             <Link href="/" legacyBehavior passHref>
