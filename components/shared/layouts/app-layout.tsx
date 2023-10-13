@@ -1,3 +1,5 @@
+"use client"
+import '../../../assets/styles/globals.css'
 import { ThemeProvider, useTheme } from "next-themes";
 import { ScriptProps } from "next/script";
 import React from "react";
@@ -55,12 +57,14 @@ export default function AppLayout({children}: ScriptProps){
     ]
 
     return (
+        <html>
+        <body>
         <ThemeProvider
             attribute="class"
             defaultTheme="system"
             enableSystem
             disableTransitionOnChange
-         >
+        >
             <header className="h-14 flex items-center px-5">
                 <NavigationMenu>
                     <NavigationMenuList>
@@ -133,6 +137,8 @@ export default function AppLayout({children}: ScriptProps){
                 {children}
             </main>
         </ThemeProvider>
+        </body>
+        </html>
     )
 }
 

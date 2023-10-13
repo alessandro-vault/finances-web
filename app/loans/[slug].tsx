@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router'
-import AppLayout from "@/components/app-layout";
+import AppLayout from "@/components/shared/layouts/app-layout";
 import {ReactElement} from "react";
 
 export default function NewLoan() : ReactElement {

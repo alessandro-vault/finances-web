@@ -1,7 +1,7 @@
-import { ScriptProps } from "next/script";
 import { Moon, Sun } from "lucide-react"
 import { ThemeProvider, useTheme } from "next-themes";
 import Link from "next/link"
+import '../../../assets/styles/globals.css'
 
 import {
     NavigationMenu,
@@ -20,8 +20,9 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Button } from "@/components/ui/button";
+import {ReactNode} from "react";
 
-export default function Layout({children}: ScriptProps) {
+export default function Layout({children}: { children : ReactNode}) {
     const { theme } = useTheme()
 
     return (
@@ -36,7 +37,7 @@ export default function Layout({children}: ScriptProps) {
                 suppressHydrationWarning
             >
                 <NavigationMenu>
-                    <Link href="/register" legacyBehavior passHref>
+                    <Link href="" legacyBehavior passHref>
                         <NavigationMenuLink className={navigationMenuTriggerStyle()}>
                             Register
                         </NavigationMenuLink>

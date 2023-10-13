@@ -1,4 +1,6 @@
-import type { ReactElement } from "react";
+"use client"
+import type { ReactElement  } from "react";
+import * as z from "zod";
 import {
     Card,
     CardContent,
@@ -18,8 +20,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
-import Layout from "@/components/layout";
-import * as z from "zod";
+import Layout from "@/components/shared/layouts/layout";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
@@ -61,7 +62,8 @@ export default function LoginPage(): ReactElement {
                                     <FormItem>
                                         <FormLabel>Password</FormLabel>
                                         <FormControl>
-                                            <Input type="password" placeholder="********" autoComplete="current-password" {...field} />
+                                            <Input type="password" placeholder="********"
+                                                   autoComplete="current-password" {...field} />
                                         </FormControl>
                                         <FormMessage/>
                                     </FormItem>
