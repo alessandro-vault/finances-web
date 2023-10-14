@@ -57,7 +57,7 @@ export default function AppLayout({children}: ScriptProps){
     ]
 
     return (
-        <html>
+        <html lang="en">
         <body>
         <ThemeProvider
             attribute="class"

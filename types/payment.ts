@@ -8,5 +8,6 @@ export type Payment = {
     carInsurance?: number,
     postage?: number,
     balance: number,
+    currency?: string,
     createdAt: string
 }
