@@ -28,12 +28,12 @@ export async function POST(req : Request, res: Response) {
         ttl: 60 * 60 * 24 * 7
     })
 
-    // cookies().set({
-    //     name: '_finances_session',
-    //     value: encryptedSession,
-    //     path: '/',
-    //     secure: process.env.NODE_ENV === 'production',
-    // })
+    cookies().set({
+        name: '_finances_session',
+        value: encryptedSession,
+        path: '/',
+        secure: process.env.NODE_ENV === 'production',
+    })
 
     return new Response('Authorization successful', {
         status: 200,

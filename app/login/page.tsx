@@ -1,5 +1,6 @@
 "use client"
-import type { ReactElement  } from "react";
+
+import type { ReactElement } from "react";
 import * as z from "zod";
 import {
     Card,
@@ -23,9 +24,9 @@ import { useForm } from "react-hook-form";
 import Layout from "@/components/shared/layouts/layout";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import {zodResolver} from "@hookform/resolvers/zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
-import {useRouter} from "next/navigation";
+import { useRouter } from "next/navigation";
 export default function LoginPage(): ReactElement {
     const router = useRouter()
     const formSchema = z.object({
@@ -63,28 +64,28 @@ export default function LoginPage(): ReactElement {
                             <FormField
                                 control={form.control}
                                 name="username"
-                                render={({field}) => (
+                                render={({ field }) => (
                                     <FormItem>
                                         <FormLabel>Username</FormLabel>
                                         <FormControl>
-                                            <Input placeholder="" {...field} autoComplete="username"/>
+                                            <Input placeholder="" {...field} autoComplete="username" />
                                         </FormControl>
                                         <FormDescription>This is your public display name.</FormDescription>
-                                        <FormMessage/>
+                                        <FormMessage />
                                     </FormItem>
                                 )}
                             />
                             <FormField
                                 control={form.control}
                                 name="password"
-                                render={({field}) => (
+                                render={({ field }) => (
                                     <FormItem>
                                         <FormLabel>Password</FormLabel>
                                         <FormControl>
                                             <Input type="password" placeholder="********"
-                                                   autoComplete="current-password" {...field} />
+                                                autoComplete="current-password" {...field} />
                                         </FormControl>
-                                        <FormMessage/>
+                                        <FormMessage />
                                     </FormItem>
                                 )}
                             />
