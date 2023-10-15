@@ -1,8 +1,8 @@
-import Link from "next/link"
+import Link from "next/link";
 
-import { cn } from "@/lib/utils"
+import { cn } from "@/lib/utils";
 import React from "react";
-import {Button} from "@/components/ui/button";
+import { Button } from "@/components/ui/button";
 
 export function MainNav({
   className,
@@ -14,29 +14,23 @@ export function MainNav({
       {...props}
     >
       <Link
-        href="/dashboard"
+        href="/"
         className="text-sm font-medium font-mono transition-colors hover:text-primary"
       >
-        <Button variant="link">
-          Inicio
-        </Button>
+        <Button variant="link">Inicio</Button>
       </Link>
       <Link
         href="/plans"
         className="text-sm font-medium font-mono text-muted-foreground transition-colors hover:text-primary"
       >
-        <Button variant="link">
-          Planes
-        </Button>
+        <Button variant="link">Planes</Button>
       </Link>
       <Link
         href="/calculate"
         className="text-sm font-medium font-mono text-muted-foreground transition-colors hover:text-primary"
       >
-        <Button variant="link">
-          Calcular
-        </Button>
+        <Button variant="link">Calcular</Button>
       </Link>
     </nav>
-  )
+  );
 }

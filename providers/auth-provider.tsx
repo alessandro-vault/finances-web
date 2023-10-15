@@ -1,35 +1,22 @@
-import { headers } from 'next/headers'
-import { ReactElement } from 'react'
-import  useAuthStore  from '@/stores/auth-store'
-import { redirect } from 'next/navigation'
+import { headers } from "next/headers";
+import { ReactElement } from "react";
+import useAuthStore from "@/stores/auth-store";
+import { redirect } from "next/navigation";
 
+const AuthProvider = ({ children }: any) => {
+  const headersList = headers();
 
-const AuthProvider  = ({ children } : any ) => {
-    const headersList = headers()
+  const token = headersList.get("x-authorization");
 
-    const token = headersList.get('x-authorization')
-    const path = headersList.get('x-url')
+  const { authenticated, login } = useAuthStore.getState();
 
-    console.log('token', token)
-    console.log('path', path)
-    if (token)
-        useAuthStore.setState({ token })
+  if (!authenticated && token) login(token);
 
-    //TODO
+  return renderChildren(children);
+};
 
-    //if (publicRoutes.includes(path!!)) return (<>{children}</>)
+const renderChildren = (children: ReactElement) => <>{children}</>;
 
-    //if (token === null) return redirect('/login')
+export const publicRoutes = ["/", "/login", "/register"];
 
-    return renderChildren(children)
-}
-
-const renderChildren = (children: ReactElement) => (<>{children}</>)
-
-export const publicRoutes = [
-    "/",
-    "/login",
-    "/register",
-]
-
-export default AuthProvider
+export default AuthProvider;

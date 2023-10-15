@@ -1,9 +1,5 @@
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-} from "@/components/ui/avatar"
-import { Button } from "@/components/ui/button"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -13,9 +9,19 @@ import {
   DropdownMenuSeparator,
   DropdownMenuShortcut,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+} from "@/components/ui/dropdown-menu";
+import useAuthStore from "@/stores/auth-store";
+import { redirect } from "next/navigation";
+import { useCookies } from "react-cookie";
 
 export function UserNav() {
+  const authStore = useAuthStore.getState();
+  const [, , removeCookie] = useCookies(["_finances_session"]);
+  const handleLogout = () => {
+    authStore.logout();
+    removeCookie("_finances_session");
+    redirect("/");
+  };
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -52,11 +58,11 @@ export function UserNav() {
           <DropdownMenuItem>New Team</DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
-        <DropdownMenuItem>
-          Log out
+        <DropdownMenuItem className="cursor-pointer">
+          <div onClick={handleLogout}>Logout</div>
           <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
-  )
+  );
 }

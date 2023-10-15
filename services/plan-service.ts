@@ -1,13 +1,11 @@
-import http from '../lib/http'
+import http from "../lib/http";
 
-const getOne = async (id : String) => {
+const getOne = async (id: String) => {
   return await http.get(`/plans/${id}`, {
     headers: {
-      'Authorization': `Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzYW5pdHkiLCJleHAiOjE2OTk5MTA5NDMsImlhdCI6MTY5NzMxODk0MywidXNlcklkIjoiYjg3MjZmYmMtYzA0Yi00YjViLThlMTctZGU4YjBiODJjODExIn0.TsT12GF4yHmIL3a1EElpi2PH9-umyOlAvk05FNpJd_I`
-    }
-  })
-}
+      Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzYW5pdHkiLCJleHAiOjE2OTk5MzMyNDIsImlhdCI6MTY5NzM0MTI0MiwidXNlcklkIjoiOWQxNjY3YjQtMWEyMS00MzJlLTk5YTgtZTkyZjY1NDRiZWNjIn0.5Yj0KdCd6ivbyTuMUlGKT1lzNYqfw2_ztYihiY9FVtk`,
+    },
+  });
+};
 
-export {
-    getOne
-}
+export { getOne };

@@ -12,4 +12,4 @@ export type PlanStats = {
   postage: number;
   IRR: number;
   EAR: number;
-}
+};
