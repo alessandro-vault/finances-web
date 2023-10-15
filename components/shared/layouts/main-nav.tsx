@@ -1,6 +1,8 @@
 import Link from "next/link"
 
 import { cn } from "@/lib/utils"
+import React from "react";
+import {Button} from "@/components/ui/button";
 
 export function MainNav({
   className,
@@ -13,21 +15,27 @@ export function MainNav({
     >
       <Link
         href="/dashboard"
-        className="text-sm font-medium transition-colors hover:text-primary"
+        className="text-sm font-medium font-mono transition-colors hover:text-primary"
       >
-        Panel
+        <Button variant="link">
+          Inicio
+        </Button>
       </Link>
       <Link
-        href="/examples/dashboard"
-        className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
+        href="/plans"
+        className="text-sm font-medium font-mono text-muted-foreground transition-colors hover:text-primary"
       >
-        Planes
+        <Button variant="link">
+          Planes
+        </Button>
       </Link>
       <Link
-        href="/examples/dashboard"
-        className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
+        href="/calculate"
+        className="text-sm font-medium font-mono text-muted-foreground transition-colors hover:text-primary"
       >
-        Calculadora
+        <Button variant="link">
+          Calcular
+        </Button>
       </Link>
     </nav>
   )
