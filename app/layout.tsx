@@ -1,4 +1,3 @@
-import AuthProvider from "@/providers/auth-provider";
 import { ReactNode } from "react";
 
 export const metadata = {
@@ -9,9 +8,7 @@ export const metadata = {
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
-      <body>
-        <AuthProvider>{children}</AuthProvider>
-      </body>
+      <body>{children}</body>
     </html>
   );
 }

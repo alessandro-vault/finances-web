@@ -25,10 +25,9 @@ import Layout from "@/components/shared/layouts/layout";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { zodResolver } from "@hookform/resolvers/zod";
-import axios from "axios";
 import { useRouter } from "next/navigation";
+import { signIn } from "next-auth/react";
 export default function LoginPage(): ReactElement {
-  const router = useRouter();
   const formSchema = z.object({
     username: z
       .string()
@@ -47,10 +46,10 @@ export default function LoginPage(): ReactElement {
   });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    await axios.post("/api/login", values).then((res) => {
-      if (res.data === "ok") {
-        router.push("/");
-      }
+    await signIn("credentials", {
+      username: values.username,
+      password: values.password,
+      callbackUrl: "/",
     });
   };
 

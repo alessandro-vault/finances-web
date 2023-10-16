@@ -1,26 +1,16 @@
-"use client";
 import Layout from "../components/shared/layouts/layout";
-import useAuthStore from "@/stores/auth-store";
 import AppLayout from "@/components/shared/layouts/app-layout";
-import { Button } from "@/components/ui/button";
+import { getServerSession } from "next-auth";
+import { authOptions } from "./api/auth/[...nextauth]/route";
 
-export default function RootPage() {
-  const auth = useAuthStore.subscribe(console.log);
-  console.log(auth);
-  //TODO
+export default async function RootPage() {
+  const session = await getServerSession(authOptions);
 
-  if (true) {
+  if (session) {
     return (
       <AppLayout>
         <div>
           <h1>Root Page</h1>
-          <Button
-            onClick={(e) => {
-              e.preventDefault();
-              console.log("click");
-              useAuthStore.getState().logout();
-            }}
-          ></Button>
         </div>
       </AppLayout>
     );

@@ -10,17 +10,12 @@ import {
   DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import useAuthStore from "@/stores/auth-store";
-import { redirect } from "next/navigation";
-import { useCookies } from "react-cookie";
+import { useRouter } from "next/navigation";
 
 export function UserNav() {
-  const authStore = useAuthStore.getState();
-  const [, , removeCookie] = useCookies(["_finances_session"]);
+  const router = useRouter();
   const handleLogout = () => {
-    authStore.logout();
-    removeCookie("_finances_session");
-    redirect("/");
+    router.push("/api/auth/signout");
   };
   return (
     <DropdownMenu>
