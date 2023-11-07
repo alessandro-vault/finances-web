@@ -25,7 +25,6 @@ import Layout from "@/components/shared/layouts/layout";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useRouter } from "next/navigation";
 import { signIn } from "next-auth/react";
 export default function LoginPage(): ReactElement {
   const formSchema = z.object({

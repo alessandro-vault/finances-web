@@ -6,6 +6,10 @@ export const formatCurrency = (amount: number, currency: string) => {
   }).format(amount);
 };
 
+export const getCurrencySymbol = (currency: string) => {
+  return Currency[currency]?.symbol ?? currency;
+};
+
 type CurrencyType = {
   [key: string]: {
     symbol: string;
@@ -14,7 +18,7 @@ type CurrencyType = {
   };
 };
 
-const Currency: CurrencyType = {
+export const Currency: CurrencyType = {
   PEN: {
     symbol: "S/.",
     name: "Peruvian Sol",
@@ -25,4 +29,11 @@ const Currency: CurrencyType = {
     name: "US Dollar",
     locale: "en-US",
   },
+  MXN: {
+    symbol: "$",
+    name: "Mexican Peso",
+    locale: "es-MX",
+  },
 };
+
+export type SupportedCurrencies = "PEN" | "USD" | "MXN";
