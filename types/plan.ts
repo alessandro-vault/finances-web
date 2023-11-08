@@ -1,3 +1,6 @@
+import { Loan } from "@/types/loan";
+import { Payment } from "@/types/payment";
+
 export type PlanStats = {
   totalAmount: number;
   downPaymentPercentage: string;
@@ -12,4 +15,12 @@ export type PlanStats = {
   postage: number;
   IRR: number;
   EAR: number;
+};
+
+export type Plan = {
+  id: string;
+  loan: Loan;
+  payments: Payment[];
+  clientId: number;
+  stats: PlanStats;
 };

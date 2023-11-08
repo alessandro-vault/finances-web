@@ -1,11 +1,22 @@
 import http from "../lib/http";
+import { getToken } from "@/services/auth-service";
+import { Plan } from "@/types/plan";
+import { PlanResponse } from "@/types/finances";
 
 const getOne = async (id: String) => {
-  return await http.get(`/plans/${id}`, {
+  return await http.get<PlanResponse>(`/plans/${id}`, {
     headers: {
-      Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzYW5pdHkiLCJleHAiOjE2OTk5MzMyNDIsImlhdCI6MTY5NzM0MTI0MiwidXNlcklkIjoiOWQxNjY3YjQtMWEyMS00MzJlLTk5YTgtZTkyZjY1NDRiZWNjIn0.5Yj0KdCd6ivbyTuMUlGKT1lzNYqfw2_ztYihiY9FVtk`,
+      Authorization: `Bearer ${await getToken()}`,
     },
   });
 };
 
-export { getOne };
+const getMany = async () => {
+  return await http.get<Plan[]>(`/plans`, {
+    headers: {
+      Authorization: `Bearer ${await getToken()}`,
+    },
+  });
+};
+
+export { getOne, getMany };

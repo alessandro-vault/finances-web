@@ -20,7 +20,7 @@ export default function AppLayout({ children }: ScriptProps) {
       enableSystem
       disableTransitionOnChange
     >
-      <header className="w-screen h-14 border-b dark:border-white/30 border-black/10 flex items-center justify-center pr-4 pl-10">
+      <header className="w-full h-14 border-b dark:border-white/30 border-black/10 flex items-center justify-center pr-4 pl-10">
         <Link href="/" legacyBehavior passHref>
           <div className="flex cursor-pointer">
             <svg

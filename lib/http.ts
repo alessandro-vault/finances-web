@@ -1,11 +1,13 @@
-import axios from "axios";
+import axios, { AxiosRequestConfig } from "axios";
 
-const http = axios.create({
+const config: AxiosRequestConfig = {
   baseURL: process.env.API_BASE_URL,
   headers: {
     "Content-Type": "application/json",
     Accept: "application/json",
   },
-});
+};
+
+const http = axios.create(config);
 
 export default http;

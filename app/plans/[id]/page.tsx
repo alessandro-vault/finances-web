@@ -4,19 +4,9 @@ import { getOne } from "@/services/plan-service";
 import { DataTable } from "@/app/plans/[id]/data-table";
 import { columns } from "@/app/plans/[id]/columns";
 import { Payment } from "@/types/payment";
-import { Loan } from "@/types/loan";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { PlanStats } from "@/types/plan";
 import { formatCurrency } from "@/lib/currency";
-
-interface PlanResponse {
-  plan: {
-    id: string;
-    loan: Loan;
-    payments: Payment[];
-    stats: PlanStats;
-  };
-}
+import { PlanResponse } from "@/types/finances";
 
 export default async function PlanDetailsPage({
   params: { id },

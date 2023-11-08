@@ -1,24 +1,17 @@
 import http from "../lib/http";
-
-export interface LoginResponse {
-  token: string;
-}
+import {
+  LoginResponse,
+  RegisterRequest,
+  RegisterResponse,
+} from "@/types/finances";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 
 export const login = async (username: string, password: string) =>
   await http.post<LoginResponse>("/auth/login", { username, password });
 
-interface RegisterRequest {
-  username: string;
-  password: string;
-  firstName: string;
-  lastName: string;
-}
-
-interface RegisterResponse {
-  id: string;
-  name: string;
-  username: string;
-  createdAt: string;
-}
 export const register = async (payload: RegisterRequest) =>
   await http.post<RegisterResponse>("/auth/clients/register", payload);
+
+export const getToken = async () =>
+  await getServerSession(authOptions).then((session) => session?.user?.token);
