@@ -322,8 +322,84 @@ const CalculatorForm = () => {
             />
           </div>
         </section>
+
+        <section className="mt-5">
+          <div className="w-1/2">
+            <FormField
+              control={form.control}
+              name="portage"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Portes</FormLabel>
+                  <FormControl>
+                    <PrefixedInput
+                      id="portage"
+                      type="number"
+                      placeholder=""
+                      prefix={getCurrencySymbol(currency)}
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormDescription className="text-xs px-2">
+                    Coste de portes.
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+        </section>
         {/* END RATE SECTION */}
         <Separator className="my-4" />
+        {/* INSURANCES SECTION */}
+        <section>
+          <FormField
+            control={form.control}
+            name="interestRate"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="text-sm">
+                  Seguro de desgravamen
+                </FormLabel>
+                <FormControl>
+                  <div className="relative">
+                    <span className="absolute top-2 right-4">%</span>
+                    <Input
+                      id="interestRate"
+                      type="number"
+                      placeholder=""
+                      {...field}
+                    />
+                  </div>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="interestRate"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="text-sm">
+                  Seguro vehicular
+                </FormLabel>
+                <FormControl>
+                  <div className="relative">
+                    <span className="absolute top-2 right-4">%</span>
+                    <Input
+                      id="interestRate"
+                      type="number"
+                      placeholder=""
+                      {...field}
+                    />
+                  </div>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </section>
         <Button type="submit" onClick={() => console.log(form.getValues())}>
           Calcular
         </Button>

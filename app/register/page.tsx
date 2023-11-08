@@ -161,10 +161,10 @@ export default function RegisterPage() {
         </CardContent>
         <CardFooter className="text-xs flex justify-center">
           <span className="text-gray-500 dark:text-gray-200 mr-2">
-            Don&apos;t have an account?
+            Already have an account?
           </span>
-          <Link href="/register" className="text-blue-300">
-            Register
+          <Link href="/login" className="text-blue-300">
+            Login
           </Link>
         </CardFooter>
       </Card>
