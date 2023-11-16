@@ -1,9 +1,14 @@
 export const formatCurrency = (amount: number, currency: string) => {
-  const currentLocale = Currency[currency].locale;
-  return new Intl.NumberFormat(currentLocale, {
-    style: "currency",
-    currency: currency,
-  }).format(amount);
+
+  if (currency) {
+    const currentLocale = Currency[currency].locale;
+
+    return new Intl.NumberFormat(currentLocale, {
+      style: "currency",
+      currency: currency,
+    }).format(amount);
+  }
+  return amount;
 };
 
 export const getCurrencySymbol = (currency: string) => {

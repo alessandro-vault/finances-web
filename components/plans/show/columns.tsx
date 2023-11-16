@@ -29,7 +29,6 @@ export const columns: ColumnDef<Payment>[] = [
       if (value === undefined) return null;
 
       const amount = parseFloat(value.toFixed(2));
-
       return (
         <div className="text-right font-medium">
           {formatCurrency(amount, currency)}
