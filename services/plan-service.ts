@@ -12,7 +12,7 @@ const getOne = async (id: String) => {
 };
 
 const getMany = async () => {
-  return await http.get<Plan[]>(`/plans`, {
+  return await http.get<Plan[]>("/plans", {
     headers: {
       Authorization: `Bearer ${await getToken()}`,
     },

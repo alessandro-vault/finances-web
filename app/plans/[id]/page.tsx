@@ -1,6 +1,5 @@
 "use client";
 
-import { Button } from "react-day-picker";
 import { useEffect, useState } from "react";
 import { Plan } from "@/types/plan";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -14,7 +13,6 @@ export default function PlanDetailsPage({
 }: {
   params: { id: string };
 }) {
-
   const [state, setState] = useState<{
     plan: Plan | null;
     loading: boolean;
@@ -25,24 +23,33 @@ export default function PlanDetailsPage({
     if (plan.payments.length > 0) {
       plan.payments.unshift({
         number: 0,
-        balance: (plan.loan.totalAmount * (100 - plan.loan.downPaymentPercentage)) / 100,
+        balance:
+          (plan.loan.totalAmount * (100 - plan.loan.downPaymentPercentage)) /
+          100,
       } as Payment);
 
-      plan.payments = plan.payments.map((payment: Payment) => (
-        { ...payment, currency: plan.loan.currency })
-      )
+      plan.payments = plan.payments.map((payment: Payment) => ({
+        ...payment,
+        currency: plan.loan.currency,
+      }));
     }
     return plan;
-  }
+  };
 
   useEffect(() => {
     fetch(`/api/plans/${id}`)
       .then((response) => response.json())
       .then(({ plan }: { plan: Plan }) => {
-        setState({ plan: sanitizePayments(plan), loading: false, error: null });
+        if (plan)
+          setState({
+            plan: sanitizePayments(plan),
+            loading: false,
+            error: null,
+          });
       })
       .catch((error) => {
         setState({ plan: null, loading: false, error });
+        console.log(error);
       });
   }, []);
 
@@ -50,19 +57,19 @@ export default function PlanDetailsPage({
     fetch(`/api/plans/${id}/payments`, { method: "POST" })
       .then((response) => response.json())
       .then(({ payments }) => {
-        setState({
-          plan: sanitizePayments({ ...state.plan!, payments }),
-          loading: false,
-          error: null,
-        })
+        if (payments)
+          setState({
+            plan: sanitizePayments({ ...state.plan!, payments }),
+            loading: false,
+            error: null,
+          });
       })
       .catch((error) => {
         setState({ plan: null, loading: false, error });
       });
   };
 
-  if (state.loading === true)
-    return <div>Loading...</div>
+  if (state.loading) return <div>Loading...</div>;
 
   if (state.plan != null)
     return (
@@ -86,7 +93,10 @@ export default function PlanDetailsPage({
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">
-                {formatCurrency(state.plan.stats.totalAmount, state.plan.loan.currency)}
+                {formatCurrency(
+                  state.plan.stats.totalAmount,
+                  state.plan.loan.currency,
+                )}
               </div>
             </CardContent>
           </Card>
@@ -110,7 +120,10 @@ export default function PlanDetailsPage({
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold text-red-400">
-                {formatCurrency(state.plan.stats.downPayment, state.plan.loan.currency)}
+                {formatCurrency(
+                  state.plan.stats.downPayment,
+                  state.plan.loan.currency,
+                )}
               </div>
             </CardContent>
           </Card>
@@ -134,7 +147,10 @@ export default function PlanDetailsPage({
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold text-emerald-400 dark:text-emerald-300">
-                {formatCurrency(state.plan.stats.remainingAmount, state.plan.loan.currency)}
+                {formatCurrency(
+                  state.plan.stats.remainingAmount,
+                  state.plan.loan.currency,
+                )}
               </div>
             </CardContent>
           </Card>
@@ -160,7 +176,10 @@ export default function PlanDetailsPage({
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">
-                {formatCurrency(state.plan.stats.monthlyPayment, state.plan.loan.currency)}
+                {formatCurrency(
+                  state.plan.stats.monthlyPayment,
+                  state.plan.loan.currency,
+                )}
               </div>
             </CardContent>
           </Card>
@@ -184,7 +203,9 @@ export default function PlanDetailsPage({
               </svg>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{state.plan.stats.APR.toFixed(2)}%</div>
+              <div className="text-2xl font-bold">
+                {state.plan.stats.APR.toFixed(2)}%
+              </div>
             </CardContent>
           </Card>
           <Card>
@@ -212,7 +233,11 @@ export default function PlanDetailsPage({
           </Card>
         </div>
         {state.plan.payments != null ? (
-          <DataTable columns={columns} data={state.plan.payments} handleClick={handleGeneratePayments} />
+          <DataTable
+            columns={columns}
+            data={state.plan.payments}
+            handleClick={handleGeneratePayments}
+          />
         ) : null}
 
         <span className="mt-5 text-gray-300">Payment: {id}</span>
