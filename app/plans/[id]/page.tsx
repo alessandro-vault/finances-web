@@ -49,7 +49,6 @@ export default function PlanDetailsPage({
       })
       .catch((error) => {
         setState({ plan: null, loading: false, error });
-        console.log(error);
       });
   }, []);
 

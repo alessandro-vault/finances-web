@@ -43,6 +43,7 @@ const CalculatorForm = () => {
   });
 
   const formSchema = z.object({
+    title: z.string().min(5).max(30),
     loanAmount: z.coerce
       .number({
         required_error: "El monto total es requerido",
@@ -106,6 +107,20 @@ const CalculatorForm = () => {
   return (
     <form onSubmit={form.handleSubmit(onSubmit)}>
       <Form {...form}>
+        <section className="mb-5">
+          <FormField
+            control={form.control}
+            name="currency"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Titulo</FormLabel>
+                <FormControl>
+                  <Input type="text" />
+                </FormControl>
+              </FormItem>
+            )}
+          />
+        </section>
         {/* CURRENCY SECTION */}
         <section>
           <FormField
@@ -400,7 +415,7 @@ const CalculatorForm = () => {
             )}
           />
         </section>
-        <Button type="submit" onClick={() => console.log(form.getValues())}>
+        <Button className="mt-10" type="submit" onClick={() => console.log(form.getValues())}>
           Calcular
         </Button>
       </Form>

@@ -12,7 +12,7 @@ const getManyFromPlan = async (planId: String) => {
 };
 
 const createToPlan = async (planId: String) => {
-  return await http.post<{ payments: Plan[] }>(`/plan/${planId}/payments`,
+  return await http.post<{ payments: Plan[] }>(`/plans/${planId}/payments`,
     {},
     {
       headers: {

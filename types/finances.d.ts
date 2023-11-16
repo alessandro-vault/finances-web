@@ -21,3 +21,12 @@ export interface LoginResponse {
 interface PlanResponse {
   plan: Plan;
 }
+
+export interface ProfileResponse {
+  clientId: number;
+  userId: string;
+  firstName: string;
+  lastName: string;
+  username: string;
+  memberSince: string;
+}
