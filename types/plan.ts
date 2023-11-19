@@ -19,6 +19,7 @@ export type PlanStats = {
 
 export type Plan = {
   id: string;
+  title: string;
   loan: Loan;
   payments: Payment[];
   clientId: number;

@@ -43,7 +43,12 @@ const CalculatorForm = () => {
   });
 
   const formSchema = z.object({
-    title: z.string().min(5).max(30),
+    title: z
+      .string({
+        required_error: "El título es requerido",
+      })
+      .min(5, "El título debe tener al menos 5 caracteres")
+      .max(30, "El título debe tener máximo 30 caracteres"),
     loanAmount: z.coerce
       .number({
         required_error: "El monto total es requerido",
@@ -76,9 +81,10 @@ const CalculatorForm = () => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      loanAmount: 10000,
-      downPaymentPercentage: 10,
-      interestRate: 10.0,
+      title: "",
+      loanAmount: 0,
+      downPaymentPercentage: 0,
+      interestRate: 0.0,
       rateType: "EFFECTIVE",
       loanTerm: 12,
       currency: "USD",
@@ -89,7 +95,7 @@ const CalculatorForm = () => {
   });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    //console.log(form.getValues());
+    console.log(formSchema);
   };
 
   const handleRateTypeChange = (
@@ -110,13 +116,17 @@ const CalculatorForm = () => {
         <section className="mb-5">
           <FormField
             control={form.control}
-            name="currency"
+            name="title"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Titulo</FormLabel>
                 <FormControl>
-                  <Input type="text" />
+                  <Input type="text" {...field} />
                 </FormControl>
+                <FormDescription className="text-xs px-2">
+                  Un título para identificar el préstamo.
+                </FormDescription>
+                <FormMessage />
               </FormItem>
             )}
           />
@@ -366,56 +376,64 @@ const CalculatorForm = () => {
         </section>
         {/* END RATE SECTION */}
         <Separator className="my-4" />
+
         {/* INSURANCES SECTION */}
-        <section>
-          <FormField
-            control={form.control}
-            name="interestRate"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel className="text-sm">
-                  Seguro de desgravamen
-                </FormLabel>
-                <FormControl>
-                  <div className="relative">
-                    <span className="absolute top-2 right-4">%</span>
-                    <Input
-                      id="interestRate"
-                      type="number"
-                      placeholder=""
-                      {...field}
-                    />
-                  </div>
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="interestRate"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel className="text-sm">
-                  Seguro vehicular
-                </FormLabel>
-                <FormControl>
-                  <div className="relative">
-                    <span className="absolute top-2 right-4">%</span>
-                    <Input
-                      id="interestRate"
-                      type="number"
-                      placeholder=""
-                      {...field}
-                    />
-                  </div>
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+        <section className="flex">
+          <div className="w-1/2">
+            <FormField
+              control={form.control}
+              name="interestRate"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-sm">
+                    Seguro de desgravamen
+                  </FormLabel>
+                  <FormControl>
+                    <div className="relative">
+                      <span className="absolute top-2 right-4">%</span>
+                      <Input
+                        id="interestRate"
+                        type="number"
+                        placeholder=""
+                        {...field}
+                      />
+                    </div>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+          <div className="w-1/2">
+            <FormField
+              control={form.control}
+              name="interestRate"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-sm">Seguro vehicular</FormLabel>
+                  <FormControl>
+                    <div className="relative">
+                      <span className="absolute top-2 right-4">%</span>
+                      <Input
+                        id="interestRate"
+                        type="number"
+                        placeholder=""
+                        {...field}
+                      />
+                    </div>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
         </section>
-        <Button className="mt-10" type="submit" onClick={() => console.log(form.getValues())}>
+        <Button
+          className="mt-10 fixed bottom-5 right-5 !bg-emerald-400 !text-black"
+          type="submit"
+          variant="outline"
+          onClick={() => console.log(form.getValues())}
+        >
           Calcular
         </Button>
       </Form>
