@@ -7,10 +7,10 @@ import {
   FormMessage,
   Form,
 } from "@/components/ui/form";
-import { format } from "date-fns";
-import { Input, PrefixedInput } from "@/components/ui/input";
-import { getCurrencySymbol, SupportedCurrencies } from "@/lib/currency";
-import { Label } from "@/components/ui/label";
+import {format} from "date-fns";
+import {Input, PrefixedInput} from "@/components/ui/input";
+import {getCurrencySymbol, SupportedCurrencies} from "@/lib/currency";
+import {Label} from "@/components/ui/label";
 import {
   Select,
   SelectContent,
@@ -21,61 +21,84 @@ import {
 } from "@/components/ui/select";
 import React from "react";
 import * as z from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { Switch } from "@/components/ui/switch";
-import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
+import {zodResolver} from "@hookform/resolvers/zod";
+import {useForm} from "react-hook-form";
+import {Switch} from "@/components/ui/switch";
+import {Button} from "@/components/ui/button";
+import {Separator} from "@/components/ui/separator";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { CalendarIcon } from "lucide-react";
-import { cn } from "@/lib/utils";
-import { Calendar } from "@/components/ui/calendar";
+import {CalendarIcon} from "lucide-react";
+import {cn} from "@/lib/utils";
+import {Calendar} from "@/components/ui/calendar";
 
-const CalculatorForm = () => {
+export type CalculatorForm = {
+  title: string,
+  loanAmount: number,
+  downPaymentPercentage: number,
+  interestRate: number,
+  rateType: string,
+  loanTerm: number,
+  currency: string,
+  portage: number,
+  loanDate: string,
+  lifeInsurance: number,
+  carInsurance: number
+}
+
+export const formSchema = z.object({
+  title: z
+    .string({
+      required_error: "Es requerido",
+    })
+    .min(5, "El título debe tener al menos 5 caracteres")
+    .max(30, "El título debe tener máximo 30 caracteres"),
+  loanAmount: z.coerce
+    .number({
+      required_error: "El monto total es requerido",
+    })
+    .gte(10000, "El monto mínimo es de 10,000")
+    .lte(1000000, "El monto máximo es de 1,000,000")
+    .positive("El monto debe ser positivo")
+    .default(10000),
+  downPaymentPercentage: z.coerce
+    .number()
+    .gt(0, "El porcentaje debe ser mayor que 0")
+    .lte(100, "El porcentaje debe ser menor que 100")
+    .positive("El monto debe ser positivo")
+    .default(0),
+  interestRate: z.coerce
+    .number()
+    .gt(0, "El valor debe ser mayor de 0")
+    .positive("El monto debe ser positivo")
+    .default(0),
+  rateType: z.enum(["EFFECTIVE", "NOMINAL"]).default("EFFECTIVE"),
+  loanTerm: z.coerce
+    .number()
+    .gte(6, "El valor debe ser mayor a 6")
+    .lte(500)
+    .positive("El monto debe ser positivo")
+    .default(12),
+  currency: z.string().default("USD"),
+  portage: z.coerce.number().gte(0).default(0),
+  loanDate: z
+    .date({
+      required_error: "La fecha es requerida",
+    })
+    .min(new Date())
+    .default(new Date()),
+  lifeInsurance: z.coerce.number().gte(0,"El porcentaje debe ser mayor que 0").positive("El monto debe ser positivo").default(0),
+  carInsurance: z.coerce.number().gte(0, "El porcentaje debe ser mayor que 0").positive("El monto debe ser positivo").default(0)
+});
+
+const CalculatorForm = ({onFormChange}: { onFormChange: any }) => {
   const [currency, setCurrency] = React.useState("USD");
   const [rateType, setRateType] = React.useState({
     value: "EFFECTIVE",
     label: "Efectiva",
-  });
-
-  const formSchema = z.object({
-    title: z
-      .string({
-        required_error: "El título es requerido",
-      })
-      .min(5, "El título debe tener al menos 5 caracteres")
-      .max(30, "El título debe tener máximo 30 caracteres"),
-    loanAmount: z.coerce
-      .number({
-        required_error: "El monto total es requerido",
-      })
-      .gte(10000, "El monto mínimo es de 10,000")
-      .lte(1000000, "El monto máximo es de 1,000,000")
-      .positive("El monto debe ser positivo"),
-    downPaymentPercentage: z.coerce
-      .number()
-      .gte(0, "El porcentaje debe ser mayor que 0")
-      .lte(100, "El porcentaje debe ser menor que 100"),
-    interestRate: z.coerce.number().gte(0),
-    rateType: z.enum(["EFFECTIVE", "NOMINAL"]),
-    loanTerm: z.coerce.number().gte(1).lte(500),
-    currency: z.string(),
-    portage: z.coerce.number().gte(0),
-    loanDate: z
-      .date({
-        required_error: "La fecha es requerida",
-      })
-      .min(new Date()),
-    insurances: z.array(
-      z.object({
-        type: z.enum(["LIFE", "CAR"]),
-        amount: z.coerce.number().gte(0),
-      }),
-    ),
   });
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -90,12 +113,13 @@ const CalculatorForm = () => {
       currency: "USD",
       portage: 0,
       loanDate: new Date(new Date().setMonth(new Date().getMonth() + 1)),
-      insurances: [],
+      lifeInsurance: 0.0,
+      carInsurance: 0.0
     },
   });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    console.log(formSchema);
+    console.log(values);
   };
 
   const handleRateTypeChange = (
@@ -103,21 +127,21 @@ const CalculatorForm = () => {
   ) => {
     const rateTypeValue =
       e.currentTarget.getAttribute("data-state") === "checked"
-        ? { value: "EFFECTIVE", label: "Efectiva" }
-        : { value: "NOMINAL", label: "Nominal" };
+        ? {value: "EFFECTIVE", label: "Efectiva"}
+        : {value: "NOMINAL", label: "Nominal"};
 
     setRateType(rateTypeValue);
     form.setValue("rateType", rateTypeValue.value as "EFFECTIVE" | "NOMINAL");
   };
 
   return (
-    <form onSubmit={form.handleSubmit(onSubmit)}>
+    <form onSubmit={form.handleSubmit(onSubmit)} onChange={(e) => onFormChange(form.getValues())}>
       <Form {...form}>
         <section className="mb-5">
           <FormField
             control={form.control}
             name="title"
-            render={({ field }) => (
+            render={({field}) => (
               <FormItem>
                 <FormLabel>Titulo</FormLabel>
                 <FormControl>
@@ -126,7 +150,7 @@ const CalculatorForm = () => {
                 <FormDescription className="text-xs px-2">
                   Un título para identificar el préstamo.
                 </FormDescription>
-                <FormMessage />
+                <FormMessage/>
               </FormItem>
             )}
           />
@@ -136,7 +160,7 @@ const CalculatorForm = () => {
           <FormField
             control={form.control}
             name="currency"
-            render={({ field }) => (
+            render={({field}) => (
               <FormItem>
                 <FormLabel>Moneda</FormLabel>
                 <FormControl>
@@ -147,7 +171,7 @@ const CalculatorForm = () => {
                     }}
                   >
                     <SelectTrigger>
-                      <SelectValue placeholder="Seleccionar Moneda" />
+                      <SelectValue placeholder="Seleccionar Moneda"/>
                     </SelectTrigger>
                     <SelectContent>
                       <SelectGroup>
@@ -165,7 +189,7 @@ const CalculatorForm = () => {
           />
         </section>
         {/* END CURRENCY SECTION */}
-        <Separator className="my-4" />
+        <Separator className="my-4"/>
         <section>
           {/* AMOUNT SECTION */}
           <section className="w-full flex gap-x-2 mb-4">
@@ -173,7 +197,7 @@ const CalculatorForm = () => {
               <FormField
                 control={form.control}
                 name="loanAmount"
-                render={({ field }) => (
+                render={({field}) => (
                   <FormItem>
                     <FormLabel>Monto total</FormLabel>
                     <FormControl>
@@ -188,7 +212,7 @@ const CalculatorForm = () => {
                     <FormDescription className="text-xs px-2">
                       El monto total del préstamo.
                     </FormDescription>
-                    <FormMessage />
+                    <FormMessage/>
                   </FormItem>
                 )}
               />
@@ -197,7 +221,7 @@ const CalculatorForm = () => {
               <FormField
                 control={form.control}
                 name="downPaymentPercentage"
-                render={({ field }) => (
+                render={({field}) => (
                   <FormItem>
                     <FormLabel>Cuota inicial (%)</FormLabel>
                     <FormControl>
@@ -214,7 +238,7 @@ const CalculatorForm = () => {
                     <FormDescription className="text-xs px-2">
                       Porcentaje de la cuota inicial.
                     </FormDescription>
-                    <FormMessage />
+                    <FormMessage/>
                   </FormItem>
                 )}
               />
@@ -226,7 +250,7 @@ const CalculatorForm = () => {
               <FormField
                 control={form.control}
                 name="loanTerm"
-                render={({ field }) => (
+                render={({field}) => (
                   <FormItem>
                     <FormLabel>Período (meses)</FormLabel>
                     <FormControl>
@@ -240,7 +264,7 @@ const CalculatorForm = () => {
                     <FormDescription className="text-xs px-2">
                       Cantidad de meses.
                     </FormDescription>
-                    <FormMessage />
+                    <FormMessage/>
                   </FormItem>
                 )}
               />
@@ -249,7 +273,7 @@ const CalculatorForm = () => {
               <FormField
                 control={form.control}
                 name="loanDate"
-                render={({ field }) => (
+                render={({field}) => (
                   <FormItem>
                     <FormLabel>Fecha del préstamo</FormLabel>
                     <Popover>
@@ -267,7 +291,7 @@ const CalculatorForm = () => {
                             ) : (
                               <span>Selecciona una fecha</span>
                             )}
-                            <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                            <CalendarIcon className="ml-auto h-4 w-4 opacity-50"/>
                           </Button>
                         </FormControl>
                       </PopoverTrigger>
@@ -289,7 +313,7 @@ const CalculatorForm = () => {
                     <FormDescription className="text-xs">
                       Fecha de desembolso.
                     </FormDescription>
-                    <FormMessage />
+                    <FormMessage/>
                   </FormItem>
                 )}
               />
@@ -297,14 +321,14 @@ const CalculatorForm = () => {
           </section>
         </section>
 
-        <Separator className="my-4" />
+        <Separator className="my-4"/>
         {/* RATE SECTION */}
         <section className="w-full flex gap-2 items-end">
           <div className="w-1/2">
             <FormField
               control={form.control}
               name="interestRate"
-              render={({ field }) => (
+              render={({field}) => (
                 <FormItem>
                   <FormLabel className="text-sm">
                     Tasa {rateType.label} Anual
@@ -320,7 +344,7 @@ const CalculatorForm = () => {
                       />
                     </div>
                   </FormControl>
-                  <FormMessage />
+                  <FormMessage/>
                 </FormItem>
               )}
             />
@@ -329,7 +353,7 @@ const CalculatorForm = () => {
             <FormField
               control={form.control}
               name="rateType"
-              render={({ field }) => (
+              render={({field}) => (
                 <FormItem>
                   <FormControl>
                     <div className="flex items-center space-x-2">
@@ -341,7 +365,7 @@ const CalculatorForm = () => {
                       <Label htmlFor="rateType">{rateType.label}</Label>
                     </div>
                   </FormControl>
-                  <FormMessage />
+                  <FormMessage/>
                 </FormItem>
               )}
             />
@@ -353,7 +377,7 @@ const CalculatorForm = () => {
             <FormField
               control={form.control}
               name="portage"
-              render={({ field }) => (
+              render={({field}) => (
                 <FormItem>
                   <FormLabel>Portes</FormLabel>
                   <FormControl>
@@ -368,22 +392,22 @@ const CalculatorForm = () => {
                   <FormDescription className="text-xs px-2">
                     Coste de portes.
                   </FormDescription>
-                  <FormMessage />
+                  <FormMessage/>
                 </FormItem>
               )}
             />
           </div>
         </section>
         {/* END RATE SECTION */}
-        <Separator className="my-4" />
+        <Separator className="my-4"/>
 
         {/* INSURANCES SECTION */}
-        <section className="flex">
+        <section className="w-full flex gap-x-2">
           <div className="w-1/2">
             <FormField
               control={form.control}
-              name="interestRate"
-              render={({ field }) => (
+              name="lifeInsurance"
+              render={({field}) => (
                 <FormItem>
                   <FormLabel className="text-sm">
                     Seguro de desgravamen
@@ -392,14 +416,14 @@ const CalculatorForm = () => {
                     <div className="relative">
                       <span className="absolute top-2 right-4">%</span>
                       <Input
-                        id="interestRate"
+                        id="lifeInsurance"
                         type="number"
                         placeholder=""
                         {...field}
                       />
                     </div>
                   </FormControl>
-                  <FormMessage />
+                  <FormMessage/>
                 </FormItem>
               )}
             />
@@ -407,22 +431,22 @@ const CalculatorForm = () => {
           <div className="w-1/2">
             <FormField
               control={form.control}
-              name="interestRate"
-              render={({ field }) => (
+              name="carInsurance"
+              render={({field}) => (
                 <FormItem>
                   <FormLabel className="text-sm">Seguro vehicular</FormLabel>
                   <FormControl>
                     <div className="relative">
                       <span className="absolute top-2 right-4">%</span>
                       <Input
-                        id="interestRate"
+                        id="carInsurance"
                         type="number"
                         placeholder=""
                         {...field}
                       />
                     </div>
                   </FormControl>
-                  <FormMessage />
+                  <FormMessage/>
                 </FormItem>
               )}
             />
@@ -432,7 +456,6 @@ const CalculatorForm = () => {
           className="mt-10 fixed bottom-5 right-5 !bg-emerald-400 !text-black"
           type="submit"
           variant="outline"
-          onClick={() => console.log(form.getValues())}
         >
           Calcular
         </Button>
