@@ -129,7 +129,7 @@ export default function RegisterPage() {
                       />
                     </FormControl>
                     <FormDescription>
-                      This is your public display name.
+                      Este sera tu identifiador unico.
                     </FormDescription>
                     <FormMessage />
                   </FormItem>
@@ -154,17 +154,17 @@ export default function RegisterPage() {
                 )}
               />
               <Button className="w-full mt-8 " type="submit">
-                Login
+                Registrarme
               </Button>
             </Form>
           </form>
         </CardContent>
         <CardFooter className="text-xs flex justify-center">
           <span className="text-gray-500 dark:text-gray-200 mr-2">
-            Already have an account?
+            Ya tienes cuenta?
           </span>
           <Link href="/login" className="text-blue-300">
-            Login
+            Iniciar sesion
           </Link>
         </CardFooter>
       </Card>

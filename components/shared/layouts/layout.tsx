@@ -84,7 +84,7 @@ export default function Layout({ children }: { children: ReactNode }) {
               </Link>
             </NavigationMenuItem>
             <NavigationMenuItem>
-              <ModeToggle />
+
             </NavigationMenuItem>
           </NavigationMenuList>
         </NavigationMenu>

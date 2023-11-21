@@ -112,14 +112,12 @@ const Landing: React.FC = () => {
           <section className="hero">
             <div className="container">
               <div className="hero-inner">
-                <div className="hero-copy">
-                  <h1 className="hero-title mt-0">
+                <div className="hero-copy text-xl">
+                  <h1 className="hero-title mt-0 text-6xl font-bold">
                     Calcula tus préstamos vehiculares
                   </h1>
                   <p className="hero-paragraph">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                    do eiusmod tempor incididunt ut labore et dolore magna
-                    aliqua. Ut ad quis nostrud.
+                    Donde puedes calcular con diversas tasas y montos
                   </p>
                   <div className="hero-cta">
                     <Button variant="outline" className="mt-5 mr-2">
@@ -258,9 +256,9 @@ const Landing: React.FC = () => {
                   <div className="pricing-table">
                     <div className="pricing-table-inner is-revealing">
                       <div className="pricing-table-main">
-                        <div className="pricing-table-header pb-24">
-                          <div className="pricing-table-price">
-                            <span className="pricing-table-price-currency h2">
+                        <div className="pricing-table-header pb-24 text-cen">
+                          <div className="pricing-table-price text-6xl flex">
+                            <span className="pricing-table-price-currency h2 ">
                               $
                             </span>
                             <span className="pricing-table-price-amount h1">
@@ -292,24 +290,6 @@ const Landing: React.FC = () => {
                       </div>
                     </div>
                   </div>
-                </div>
-              </div>
-            </div>
-          </section>
-
-          <section className="cta section">
-            <div className="container">
-              <div className="cta-inner section-inner">
-                <h3 className="section-title mt-0">
-                  Still not convinced on buying?
-                </h3>
-                <div className="cta-cta">
-                  <a
-                    className="button button-primary button-wide-mobile"
-                    href="#"
-                  >
-                    Get in touch
-                  </a>
                 </div>
               </div>
             </div>
