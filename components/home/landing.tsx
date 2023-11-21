@@ -107,7 +107,7 @@ const Landing: React.FC = () => {
         strategy="beforeInteractive"
         src="https://unpkg.com/animejs@3.0.1/lib/anime.min.js"
       />
-      <div className="is-boxed has-animations">
+      <div className="is-boxed has-animations dark:!bg-black bg-white">
         <div className="body-wrap">
           <section className="hero">
             <div className="container">
