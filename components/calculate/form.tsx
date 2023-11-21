@@ -34,6 +34,9 @@ import {
 import {CalendarIcon} from "lucide-react";
 import {cn} from "@/lib/utils";
 import {Calendar} from "@/components/ui/calendar";
+import {router} from "next/client";
+import {useRouter} from "next/navigation";
+import {Plan} from "@/types/plan";
 
 export type CalculatorForm = {
   title: string,
@@ -43,7 +46,7 @@ export type CalculatorForm = {
   rateType: string,
   loanTerm: number,
   currency: string,
-  portage: number,
+  postage: number,
   loanDate: string,
   lifeInsurance: number,
   carInsurance: number
@@ -83,18 +86,19 @@ export const formSchema = z.object({
     .positive("El monto debe ser positivo")
     .default(12),
   currency: z.string().default("USD"),
-  portage: z.coerce.number().gte(0).default(0),
+  postage: z.coerce.number().gte(0).default(0),
   loanDate: z
     .date({
       required_error: "La fecha es requerida",
     })
     .min(new Date())
     .default(new Date()),
-  lifeInsurance: z.coerce.number().gte(0,"El porcentaje debe ser mayor que 0").positive("El monto debe ser positivo").default(0),
-  carInsurance: z.coerce.number().gte(0, "El porcentaje debe ser mayor que 0").positive("El monto debe ser positivo").default(0)
+  lifeInsurance: z.coerce.number().gte(0,"El porcentaje debe ser mayor que 0").default(0),
+  carInsurance: z.coerce.number().gte(0, "El porcentaje debe ser mayor que 0").default(0)
 });
 
 const CalculatorForm = ({onFormChange}: { onFormChange: any }) => {
+  const router = useRouter();
   const [currency, setCurrency] = React.useState("USD");
   const [rateType, setRateType] = React.useState({
     value: "EFFECTIVE",
@@ -111,7 +115,7 @@ const CalculatorForm = ({onFormChange}: { onFormChange: any }) => {
       rateType: "EFFECTIVE",
       loanTerm: 12,
       currency: "USD",
-      portage: 0,
+      postage: 0,
       loanDate: new Date(new Date().setMonth(new Date().getMonth() + 1)),
       lifeInsurance: 0.0,
       carInsurance: 0.0
@@ -119,7 +123,33 @@ const CalculatorForm = ({onFormChange}: { onFormChange: any }) => {
   });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    console.log(values);
+    if (formSchema.safeParse(values).success) {
+      const payload = values;
+
+      function addInsurance(payload, insuranceType, insuranceLabel) {
+        if (payload[insuranceType] > 0) {
+          payload['insurances'].push({
+            "type": insuranceLabel,
+            "percentage": payload[insuranceType] / 100
+          });
+          delete payload[insuranceType];
+        }
+      }
+
+      payload['insurances'] = []
+      payload.interestRate = payload.interestRate / 100
+
+      addInsurance(payload, 'lifeInsurance', 'LIFE');
+      addInsurance(payload, 'carInsurance', 'CAR');
+
+      console.log(payload)
+
+      await fetch('/api/plans', {
+        method: 'POST',
+        body: JSON.stringify(payload)
+      }).then(r => r.json())
+        .then(({ plan } : { plan : Plan}) => router.push(`/plans/${plan.id}`))
+    }
   };
 
   const handleRateTypeChange = (
@@ -376,13 +406,13 @@ const CalculatorForm = ({onFormChange}: { onFormChange: any }) => {
           <div className="w-1/2">
             <FormField
               control={form.control}
-              name="portage"
+              name="postage"
               render={({field}) => (
                 <FormItem>
                   <FormLabel>Portes</FormLabel>
                   <FormControl>
                     <PrefixedInput
-                      id="portage"
+                      id="postage"
                       type="number"
                       placeholder=""
                       prefix={getCurrencySymbol(currency)}

@@ -20,7 +20,11 @@ const getMany = async () => {
 };
 
 const createOne = async (payload) => {
-  return await http.post<{plan: Plan}>('/plans')
+  return await http.post<{plan: Plan}>('/plans', payload, {
+    headers: {
+      Authorization: `Bearer ${await getToken()}`,
+    }
+  })
 }
 
-export { getOne, getMany };
+export { getOne, getMany, createOne };
