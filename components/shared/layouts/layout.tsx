@@ -20,8 +20,6 @@ export default function Layout({ children }: { children: ReactNode }) {
   const pathname = usePathname();
   const { theme } = useTheme();
 
-  console.log(pathname == "/");
-
   return (
     <ThemeProvider
       attribute="class"

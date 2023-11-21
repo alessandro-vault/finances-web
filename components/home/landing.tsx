@@ -1,6 +1,7 @@
 "use client";
 
-import "../../assets/stylesheets/landing.css";
+import "../../assets/stylesheets/scss/style.scss";
+
 import React, { useEffect } from "react";
 
 import Script from "next/script";
