@@ -1,4 +1,4 @@
-import "../../assets/styles/globals.css";
+import "@/assets/stylesheets/globals.css";
 import AppLayout from "@/components/shared/layouts/app-layout";
 
 export const metadata = {

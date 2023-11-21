@@ -1,6 +1,6 @@
 "use client";
 
-import "../../../assets/styles/globals.css";
+import "@/assets/stylesheets/globals.css";
 import { ThemeProvider } from "next-themes";
 import { ScriptProps } from "next/script";
 import React from "react";

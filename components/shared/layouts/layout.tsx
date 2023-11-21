@@ -2,7 +2,7 @@
 
 import { ThemeProvider, useTheme } from "next-themes";
 import Link from "next/link";
-import "@/assets/styles/globals.css";
+import "@/assets/stylesheets/globals.css";
 
 import {
   NavigationMenu,
@@ -14,9 +14,13 @@ import {
 import { Button } from "@/components/ui/button";
 import { ReactNode } from "react";
 import ModeToggle from "@/components/shared/mode-toggle";
+import { usePathname } from "next/navigation";
 
 export default function Layout({ children }: { children: ReactNode }) {
+  const pathname = usePathname();
   const { theme } = useTheme();
+
+  console.log(pathname == "/");
 
   return (
     <ThemeProvider
@@ -26,7 +30,9 @@ export default function Layout({ children }: { children: ReactNode }) {
       disableTransitionOnChange
     >
       <header
-        className="w-screen h-14 border-b dark:border-white/30 border-black/10 flex items-center justify-center pr-4 pl-10"
+        className={`w-screen h-14 border-b dark:border-white/30 border-black/10 flex items-center justify-center pr-4 pl-10 ${
+          pathname == "/" ? "site-header" : ""
+        }`}
         suppressHydrationWarning
       >
         <Link href="/" legacyBehavior passHref>
