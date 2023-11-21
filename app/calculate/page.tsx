@@ -9,15 +9,15 @@ import {
 } from "@/components/ui/card";
 
 import React, {useState} from "react";
-import CalculatorForm from "@/components/calculate/form";
+import CalculatorForm , { type CalculatorForm as CalculatorFormType } from "@/components/calculate/form";
 import CalculatePreview from "@/components/calculate/preview";
 import {Separator} from "@/components/ui/separator";
 
 export default function CalculatePage() {
 
-  const [values, setValues] = useState({} as CalculatorForm);
+  const [values, setValues] = useState({} as CalculatorFormType);
 
-  const handleFormChange = (currentValues : CalculatorForm) => {
+  const handleFormChange = (currentValues : CalculatorFormType) => {
     setValues(currentValues)
   }
 

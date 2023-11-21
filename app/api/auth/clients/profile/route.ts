@@ -1,14 +1,13 @@
-import { register } from "@/services/auth-service";
 import { getProfile } from "@/services/clients-service";
 
-export async function GET(req: Request) {
+export async function GET(_req: Request) {
   try {
-    const { data } = await getProfile();
+    const response = await getProfile();
 
-    return new Response(JSON.stringify(data));
+    return new Response(JSON.stringify(response.data) );
   } catch (error: any) {
     return new Response(
-      JSON.stringify({ error: error.response.data.message }),
+      JSON.stringify({ error: "There was an error" }),
       {
         status: 500,
       },

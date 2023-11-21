@@ -1,6 +1,6 @@
 "use client"
 
-import CalculatorForm, {formSchema} from "@/components/calculate/form";
+import {formSchema } from "@/components/calculate/form";
 import {Badge} from "@/components/ui/badge";
 import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card";
 import {formatCurrency} from "@/lib/currency";
@@ -8,15 +8,10 @@ import {useEffect, useState} from "react";
 import {PMT} from "@/lib/finances";
 import {Skeleton} from "@/components/ui/skeleton";
 
+const groupErrors = (errors : any): Object => {
+  const groupedErrors = {} as any;
 
-interface PreviewProps {
-  values: CalculatorForm
-}
-
-const groupErrors = (errors): Object => {
-  const groupedErrors = {};
-
-  errors.forEach((e) => {
+  errors.forEach((e : any) => {
     const path = e.path[0]
 
     if (!groupedErrors[path]) {
@@ -29,7 +24,7 @@ const groupErrors = (errors): Object => {
   return groupedErrors
 }
 
-const attributeText = {
+const attributeText : { [x: string] : string } = {
   title: 'Titulo',
   loanAmount: 'Monto total',
   downPaymentPercentage: 'Cuota inicial',
@@ -38,13 +33,12 @@ const attributeText = {
   carInsurance: 'Seguro vehicular'
 }
 
-const CalculatePreview = ({values}) => {
+const CalculatePreview = ({values} : { values: any}) => {
   const [pmt, setPMT] = useState(0.0);
-  const [irr, setIRR] = useState(0.0)
 
   const validation = formSchema.safeParse(values)
   const validSchema = validation.success ?? false
-  let errors;
+  let errors : any;
 
   useEffect(() => {
     const interestRate = parseFloat(values.interestRate) / 100
@@ -66,7 +60,10 @@ const CalculatePreview = ({values}) => {
     )
   }, [values]);
 
+
+  // @ts-ignore
   if (validation.error) {
+    // @ts-ignore
     errors = groupErrors(JSON.parse(formSchema.safeParse(values).error))
   }
 
@@ -250,13 +247,13 @@ const CalculatePreview = ({values}) => {
           {
             Object.keys(errors).map(e => {
               return (
-                <div c>
+                <div>
                   <h2 className="text-black dark:text-white my-2">
                     {attributeText[e]}
                   </h2>
                   <div>
                     {
-                      errors[e].map(m => <Badge
+                      errors[e].map((m : any) => <Badge
                         className="bg-rose-50 text-rose-400 border-rose-500 dark:bg-black dark:text-gray-200 dark:border-rose-400">{m}</Badge>)
                     }
                   </div>

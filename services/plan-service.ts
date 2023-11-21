@@ -19,7 +19,7 @@ const getMany = async () => {
   });
 };
 
-const createOne = async (payload) => {
+const createOne = async (payload: any) => {
   return await http.post<{plan: Plan}>('/plans', payload, {
     headers: {
       Authorization: `Bearer ${await getToken()}`,

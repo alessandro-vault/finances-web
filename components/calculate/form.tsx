@@ -34,7 +34,6 @@ import {
 import {CalendarIcon} from "lucide-react";
 import {cn} from "@/lib/utils";
 import {Calendar} from "@/components/ui/calendar";
-import {router} from "next/client";
 import {useRouter} from "next/navigation";
 import {Plan} from "@/types/plan";
 
@@ -122,20 +121,22 @@ const CalculatorForm = ({onFormChange}: { onFormChange: any }) => {
     },
   });
 
+  function addInsurance(payload : any, insuranceType : string, insuranceLabel : string) {
+    if (payload[insuranceType] > 0) {
+      payload['insurances'].push({
+        "type": insuranceLabel,
+        "percentage": payload[insuranceType] / 100
+      });
+      delete payload[insuranceType];
+    }
+  }
+
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     if (formSchema.safeParse(values).success) {
       const payload = values;
 
-      function addInsurance(payload, insuranceType, insuranceLabel) {
-        if (payload[insuranceType] > 0) {
-          payload['insurances'].push({
-            "type": insuranceLabel,
-            "percentage": payload[insuranceType] / 100
-          });
-          delete payload[insuranceType];
-        }
-      }
 
+      // @ts-ignore
       payload['insurances'] = []
       payload.interestRate = payload.interestRate / 100
 
@@ -165,7 +166,7 @@ const CalculatorForm = ({onFormChange}: { onFormChange: any }) => {
   };
 
   return (
-    <form onSubmit={form.handleSubmit(onSubmit)} onChange={(e) => onFormChange(form.getValues())}>
+    <form onSubmit={form.handleSubmit(onSubmit)} onChange={() => onFormChange(form.getValues())}>
       <Form {...form}>
         <section className="mb-5">
           <FormField
@@ -190,7 +191,7 @@ const CalculatorForm = ({onFormChange}: { onFormChange: any }) => {
           <FormField
             control={form.control}
             name="currency"
-            render={({field}) => (
+            render={() => (
               <FormItem>
                 <FormLabel>Moneda</FormLabel>
                 <FormControl>
